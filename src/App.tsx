@@ -1,9 +1,7 @@
 import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
 import { LoginPage } from './pages/LoginPage';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
-
 import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailsPage } from './pages/ProductDetailsPage';
 import { ProfilePage } from './pages/ProfilePage';

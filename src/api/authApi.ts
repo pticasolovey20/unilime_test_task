@@ -1,78 +1,63 @@
-import { Credentials, RefreshTokenResponse, User } from '../types';
+import { KEYS } from '../utils/localStorage';
+import { Credentials, TokenResponse, User } from '../types';
 import { axiosInstance } from './axiosInstance';
 
-export const refreshAccessToken = async (): Promise<string> => {
-	const { data } = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh');
+export const updateToken = (token: string, expiresIn: number) => {
+	const currentDate = new Date();
+	const timestamp = currentDate.getTime() + expiresIn * 1000;
 
-	return data.access_token;
+	localStorage.setItem(KEYS.EXPIRATION, JSON.stringify(timestamp));
+	localStorage.setItem(KEYS.ACCESS_TOKEN, token);
+	axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+	return true;
 };
 
-// In case of 401 status code error, for some reason it causes endless /auth/refresh request
-
-// axiosInstance.interceptors.response.use(
-// 	async (response) => response,
-
-// 	async (error) => {
-// 		const originalRequest = error.config;
-// 		const errorStatus = error.response.status;
-
-// 		if (errorStatus === 401 && !originalRequest._retry) {
-// 			originalRequest._retry = true;
-
-// 			try {
-// 				const accessToken = await refreshAccessToken();
-// 				axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-
-// 				return axiosInstance(originalRequest);
-// 			} catch (error) {
-// 				console.error('Failed to refresh access token', error);
-// 			}
-// 		}
-
-// 		return Promise.reject(error);
-// 	}
-// );
-
-axiosInstance.interceptors.response.use(
-	async (response) => response,
-
-	async (error) => {
-		const originalRequest = error.config;
-		const errorStatus = error.response.status;
-
-		if (errorStatus === 401 && !originalRequest._retry) {
-			originalRequest._retry = true;
-			localStorage.removeItem('accessToken');
-			window.location.href = '/login';
-		}
-
-		return Promise.reject(error);
+export const refreshAccessToken = async (): Promise<TokenResponse> => {
+	try {
+		const { data } = await axiosInstance.post('/auth/refresh');
+		return data;
+	} catch (error) {
+		throw new Error('Failed to refresh access token.');
 	}
-);
+};
 
-export const loginUser = async (credentials: Credentials): Promise<void> => {
-	const { data } = await axiosInstance.post('/auth/login', credentials);
+export const loginUser = async (credentials: Credentials): Promise<TokenResponse> => {
+	try {
+		const { data } = await axiosInstance.post('/auth/login', credentials);
+		const accessToken = data.access_token;
 
-	const accessToken = data.access_token;
-	axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
-	localStorage.setItem('accessToken', accessToken);
+		axiosInstance.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken;
+		localStorage.setItem('accessToken', accessToken);
+
+		return data;
+	} catch (error: any) {
+		if (error.response.status >= 500 && error.response.status < 600) {
+			throw new Error('Internal server error. Please try again later');
+		} else {
+			throw new Error('Failed to log in. Please check your credentials and try again.');
+		}
+	}
 };
 
 export const logoutUser = async (): Promise<string> => {
-	const { data } = await axiosInstance.post('/auth/logout');
+	try {
+		const { data } = await axiosInstance.post('/auth/logout');
 
-	delete axiosInstance.defaults.headers.common['Authorization'];
-	localStorage.removeItem('accessToken');
+		delete axiosInstance.defaults.headers.common['Authorization'];
+		localStorage.removeItem('accessToken');
 
-	return data.message;
+		return data.message;
+	} catch (error) {
+		throw new Error('Failed to log out. Please try again later.');
+	}
 };
 
 export const getUser = async (): Promise<User> => {
 	try {
 		const { data } = await axiosInstance.get('/auth/user-profile');
-
 		return data;
 	} catch (error) {
-		throw new Error('An unexpected error occurred. Please try again later');
+		throw new Error('The session has expired. Please sign in again');
 	}
 };

@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
-import { FiltersValues } from '../../../types';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { KEYS } from '../../../utils/localStorage';
+import { FiltersValues } from '../../../types';
 import { formatDate } from '../../../utils/formatDate';
-
 import styles from './Filter.module.scss';
 
 type FiltersProps = {
@@ -12,20 +12,31 @@ type FiltersProps = {
 };
 
 export const Filters: FC<FiltersProps> = ({ setFilters, setCurrentPage, refetch }): JSX.Element => {
-	const { register, handleSubmit, setValue, reset } = useForm<FiltersValues>({ mode: 'onChange' });
+	const filtersString = localStorage.getItem(KEYS.FILTERS);
+	const savedFilters = filtersString ? JSON.parse(filtersString) : null;
+
+	const { register, handleSubmit, setValue, reset } = useForm<FiltersValues>({
+		mode: 'onChange',
+		defaultValues: {
+			from: savedFilters?.from,
+			to: savedFilters?.to,
+			price_from: savedFilters?.price_from,
+			price_to: savedFilters?.price_to,
+			title: savedFilters?.title,
+		},
+	});
 
 	const onSubmit: SubmitHandler<FiltersValues> = (formData) => {
 		const { from, to } = formData;
 
-		const newFormData = {
-			...formData,
-			from: formatDate(from),
-			to: formatDate(to),
-		};
+		if (from || to) {
+			formData.from = formatDate(from) ?? null;
+			formData.to = formatDate(to) ?? null;
+		}
 
 		setCurrentPage(1);
-		setFilters(newFormData);
-		localStorage.setItem('filters', JSON.stringify(newFormData));
+		setFilters(formData);
+		localStorage.setItem('filters', JSON.stringify(formData));
 	};
 
 	const handleResetFilters = () => {
@@ -94,8 +105,11 @@ export const Filters: FC<FiltersProps> = ({ setFilters, setCurrentPage, refetch 
 			</div>
 
 			<div className={styles.buttonContainer}>
-				<button type='submit'>Apply</button>
-				<button type='button' onClick={handleResetFilters}>
+				<button type='submit' className={styles.submitButton}>
+					Apply
+				</button>
+
+				<button type='button' title='Clear all filters' onClick={handleResetFilters}>
 					Clear
 				</button>
 			</div>

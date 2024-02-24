@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { formatProductDate } from '../../utils/formatDate';
-
 import styles from './Products.module.scss';
 
 type ProductItemProps = {
@@ -9,7 +8,7 @@ type ProductItemProps = {
 	title: string;
 	price: string;
 	thumbnail: string;
-	created_at: string;
+	created_at?: string;
 };
 
 export const ProductItem: FC<ProductItemProps> = ({ id, title, price, thumbnail, created_at }) => {
