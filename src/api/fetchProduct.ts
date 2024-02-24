@@ -1,6 +1,7 @@
+import { FiltersValues } from '../types';
 import { axiosInstance } from './axiosInstance';
 
-export const fetchProducts = async (page, filters) => {
+export const fetchProducts = async (page: number, filters: FiltersValues) => {
 	try {
 		const savedFilters = localStorage.getItem('filters');
 		const allFilters = { ...JSON.parse(savedFilters ?? '{}'), ...filters };
@@ -17,7 +18,7 @@ export const fetchProducts = async (page, filters) => {
 	}
 };
 
-export const fetchProductById = async (id) => {
+export const fetchProductById = async (id: string | undefined) => {
 	try {
 		const { data } = await axiosInstance.get(`/products/${id}`);
 

@@ -1,9 +1,18 @@
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { formatProductDate } from '../../utils/formatDate';
 
 import styles from './Products.module.scss';
 
-export const ProductItem = ({ id, title, price, thumbnail, created_at }) => {
+type ProductItemProps = {
+	id: number;
+	title: string;
+	price: string;
+	thumbnail: string;
+	created_at: string;
+};
+
+export const ProductItem: FC<ProductItemProps> = ({ id, title, price, thumbnail, created_at }) => {
 	return (
 		<Link to={`/product/${id}`} className={styles.productContainer}>
 			<div className={styles.productItem}>

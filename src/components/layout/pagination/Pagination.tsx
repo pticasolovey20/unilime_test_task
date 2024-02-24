@@ -1,8 +1,17 @@
+import { FC } from 'react';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
 
 import styles from './Pagination.module.scss';
 
-export const Pagination = ({
+type PaginationProps = {
+	currentPage: number;
+	disablePrev: boolean;
+	disableNext: boolean;
+	handlePrevPage: () => void;
+	handleNextPage: () => void;
+};
+
+export const Pagination: FC<PaginationProps> = ({
 	currentPage,
 	disablePrev,
 	disableNext,

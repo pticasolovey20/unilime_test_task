@@ -1,9 +1,10 @@
+import { Credentials, RefreshTokenResponse, User } from '../types';
 import { axiosInstance } from './axiosInstance';
 
-export const refreshAccessToken = async () => {
-	const { data } = await axiosInstance.post('/auth/refresh');
+export const refreshAccessToken = async (): Promise<string> => {
+	const { data } = await axiosInstance.post<RefreshTokenResponse>('/auth/refresh');
 
-	return data;
+	return data.access_token;
 };
 
 // In case of 401 status code error, for some reason it causes endless /auth/refresh request
@@ -32,7 +33,7 @@ axiosInstance.interceptors.response.use(
 	}
 );
 
-export const loginUser = async (credentials) => {
+export const loginUser = async (credentials: Credentials): Promise<void> => {
 	const { data } = await axiosInstance.post('/auth/login', credentials);
 
 	const accessToken = data.access_token;
@@ -40,7 +41,7 @@ export const loginUser = async (credentials) => {
 	localStorage.setItem('accessToken', accessToken);
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (): Promise<string> => {
 	const { data } = await axiosInstance.post('/auth/logout');
 
 	delete axiosInstance.defaults.headers.common['Authorization'];
@@ -49,7 +50,7 @@ export const logoutUser = async () => {
 	return data.message;
 };
 
-export const getUser = async () => {
+export const getUser = async (): Promise<User> => {
 	try {
 		const { data } = await axiosInstance.get('/auth/user-profile');
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../api/fetchProduct';
 
@@ -12,7 +12,7 @@ import { Loading } from '../components/layout/loading/Loading';
 import { ErrorPage } from '../components/layout/error/ErrorPage';
 import { Empty } from '../components/products/Empty';
 
-export const ProductsPage = () => {
+export const ProductsPage: FC = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [filters, setFilters] = useState(JSON.parse(localStorage.getItem('filters') ?? '{}'));
 

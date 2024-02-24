@@ -1,13 +1,20 @@
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FC, useEffect } from 'react';
+import { FiltersValues } from '../../../types';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { formatDate } from '../../../utils/formatDate';
 
 import styles from './Filter.module.scss';
 
-export const Filters = ({ setFilters, setCurrentPage, refetch }) => {
-	const { register, handleSubmit, setValue, reset } = useForm({ mode: 'onChange' });
+type FiltersProps = {
+	setFilters: (filters: FiltersValues) => void;
+	setCurrentPage: (page: number) => void;
+	refetch: () => void;
+};
 
-	const onSubmit = (formData) => {
+export const Filters: FC<FiltersProps> = ({ setFilters, setCurrentPage, refetch }): JSX.Element => {
+	const { register, handleSubmit, setValue, reset } = useForm<FiltersValues>({ mode: 'onChange' });
+
+	const onSubmit: SubmitHandler<FiltersValues> = (formData) => {
 		const { from, to } = formData;
 
 		const newFormData = {
@@ -24,7 +31,13 @@ export const Filters = ({ setFilters, setCurrentPage, refetch }) => {
 	const handleResetFilters = () => {
 		localStorage.removeItem('filters');
 		setCurrentPage(1);
-		setFilters({});
+		setFilters({
+			from: '',
+			to: '',
+			price_from: '',
+			price_to: '',
+			title: '',
+		});
 		refetch();
 		reset();
 	};
@@ -36,7 +49,7 @@ export const Filters = ({ setFilters, setCurrentPage, refetch }) => {
 			const parsedFilters = JSON.parse(savedFilters);
 
 			Object.keys(parsedFilters).forEach((key) => {
-				setValue(key, parsedFilters[key]);
+				setValue(key as keyof FiltersValues, parsedFilters[key]);
 			});
 		}
 	}, [setValue]);
@@ -45,19 +58,18 @@ export const Filters = ({ setFilters, setCurrentPage, refetch }) => {
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.filtersForm}>
 			<div className={styles.container}>
 				<label>From Date</label>
-				<input id='from' name='from' type='date' placeholder='From Date' {...register('from')} />
+				<input id='from' type='date' placeholder='From Date' {...register('from')} />
 			</div>
 
 			<div className={styles.container}>
 				<label>To Date</label>
-				<input id='to' name='to' type='date' placeholder='To Date' {...register('to')} />
+				<input id='to' type='date' placeholder='To Date' {...register('to')} />
 			</div>
 
 			<div className={styles.container}>
 				<label>From Price</label>
 				<input
 					id='price_from'
-					name='price_from'
 					type='number'
 					placeholder='From Price'
 					min={0}
@@ -69,7 +81,6 @@ export const Filters = ({ setFilters, setCurrentPage, refetch }) => {
 				<label>To Price</label>
 				<input
 					id='price_to'
-					name='price_to'
 					type='number'
 					placeholder='To Price'
 					min={0}
@@ -79,7 +90,7 @@ export const Filters = ({ setFilters, setCurrentPage, refetch }) => {
 
 			<div className={styles.container}>
 				<label>By Title</label>
-				<input id='title' name='title' type='text' placeholder='Title' {...register('title')} />
+				<input id='title' type='text' placeholder='Title' {...register('title')} />
 			</div>
 
 			<div className={styles.buttonContainer}>

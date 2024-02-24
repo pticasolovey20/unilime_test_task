@@ -4,13 +4,14 @@ import { logoutUser } from '../../../api/authApi';
 import toast from 'react-hot-toast';
 
 import styles from './Header.module.scss';
+import { FC } from 'react';
 
 const navigation = [
 	{ id: 1, route: '/', label: 'Home' },
 	{ id: 2, route: '/profile', label: 'Profile' },
 ];
 
-export const Header = () => {
+export const Header: FC = () => {
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
@@ -19,7 +20,7 @@ export const Header = () => {
 
 			toast.success(message);
 			navigate('/login');
-		} catch (error) {
+		} catch (error: any) {
 			toast.error(error.message);
 		}
 	};

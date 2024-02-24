@@ -1,6 +1,9 @@
+import { FC } from 'react';
+import { User } from '../../types';
+
 import styles from './ProfileCard.module.scss';
 
-export const ProfileCard = ({ email, name, profile_image }) => {
+export const ProfileCard: FC<User> = ({ email, name, profile_image }) => {
 	return (
 		<div className={styles.card}>
 			<img src={profile_image} alt={name} />

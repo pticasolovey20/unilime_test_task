@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { LoginPage } from './pages/LoginPage';
@@ -7,7 +8,7 @@ import { ProductsPage } from './pages/ProductsPage';
 import { ProductDetailsPage } from './pages/ProductDetailsPage';
 import { ProfilePage } from './pages/ProfilePage';
 
-export const App = () => {
+export const App: FC = () => {
 	return (
 		<Routes>
 			<Route path='/login' element={<LoginPage />} />
