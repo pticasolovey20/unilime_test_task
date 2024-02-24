@@ -1,0 +1,30 @@
+@import '../../../styles/index.scss';
+
+.container {
+	width: 100%;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+
+	span {
+		font-weight: 600;
+	}
+
+	button {
+		width: 30px;
+		height: 30px;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		padding: 5px;
+		border: none;
+		border-radius: 100%;
+		box-shadow: 1px 1px 3px gray;
+
+		cursor: pointer;
+	}
+}

@@ -1,0 +1,35 @@
+@import './variables';
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	list-style: none;
+	outline: none;
+	text-decoration: none;
+}
+
+#root {
+	height: 100dvh;
+	display: flex;
+	flex-direction: column;
+}
+
+main {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+
+	.page-container {
+		max-width: 1440px;
+		width: 100%;
+
+		flex: 1;
+		display: flex;
+		padding: 15px 20px;
+	}
+}
+
+::-webkit-scrollbar {
+	display: none;
+}

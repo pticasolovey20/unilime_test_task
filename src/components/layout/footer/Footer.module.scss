@@ -1,0 +1,33 @@
+@import '../../../styles/index.scss';
+
+footer {
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+}
+
+.footerContainer {
+	max-width: 1440px;
+	width: 100%;
+
+	display: flex;
+	justify-content: space-between;
+	gap: 5px;
+
+	padding: 20px;
+	border-top: 1px solid #c6c6c6;
+
+	@media (max-width: $medium) {
+		flex-direction: column;
+	}
+
+	span {
+		font-size: 14px;
+		color: #000000;
+
+		@media (min-width: $medium) {
+			font-size: 16px;
+		}
+	}
+}

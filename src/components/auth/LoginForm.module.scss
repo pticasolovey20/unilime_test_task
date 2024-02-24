@@ -1,0 +1,65 @@
+@import '../../styles/variables';
+
+.loginForm {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	max-width: 400px;
+	width: 100%;
+
+	padding: 20px;
+	border-radius: 5px;
+
+	background-color: azure;
+	box-shadow: 1px 1px 3px gray;
+
+	h2 {
+		font-size: 30px;
+		text-align: center;
+
+		margin: 30px 0px 10px 0px;
+	}
+
+	.formRow {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+
+		label {
+			font-size: 16px;
+			font-weight: 600;
+
+			margin-left: 4px;
+		}
+
+		input {
+			font-size: 16px;
+			padding: 12px 15px;
+
+			border: none;
+			border-radius: 5px;
+
+			box-shadow: 1px 1px 3px gray;
+		}
+
+		.errorMessage {
+			color: crimson;
+			font-size: 14px;
+			font-weight: 600;
+		}
+	}
+
+	button {
+		font-size: 16px;
+		padding: 15px;
+		margin-bottom: 20px;
+
+		border: none;
+		border-radius: 5px;
+
+		background-color: aquamarine;
+		box-shadow: 1px 1px 3px gray;
+		cursor: pointer;
+	}
+}
