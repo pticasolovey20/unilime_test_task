@@ -21,7 +21,7 @@ export const LoginForm = () => {
 		try {
 			await loginUser(credentials);
 			toast.success('You have successfully signed in');
-			navigate('/');
+			navigate('/', { replace: true });
 		} catch (error) {
 			toast.error(error.message);
 		}

@@ -6,7 +6,7 @@ import { Layout } from './Layout';
 export const ProtectedRoute = () => {
 	const { accessToken } = useAuth();
 
-	if (!accessToken) {
+	if (!accessToken && !localStorage.getItem('accessToken')) {
 		return <Navigate to='/login' />;
 	}
 

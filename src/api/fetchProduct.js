@@ -21,7 +21,7 @@ export const fetchProductById = async (id) => {
 	try {
 		const { data } = await axiosInstance.get(`/products/${id}`);
 
-		return data;
+		return data[0];
 	} catch (error) {
 		throw new Error('An unexpected error occurred. Please try again later');
 	}
