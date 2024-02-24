@@ -1,10 +1,16 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../api/axiosInstance';
 
-const AuthContext = createContext();
+type AuthContextType = {
+	accessToken: string | null;
+};
 
-export const AuthProvider = ({ children }) => {
-	const [accessToken /*setAccessToken*/] = useState(localStorage.getItem('accessToken'));
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+	const [accessToken /*setAccessToken*/] = useState<string | null>(
+		localStorage.getItem('accessToken')
+	);
 
 	useEffect(() => {
 		if (accessToken) {

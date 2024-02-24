@@ -1,4 +1,6 @@
-import { useForm } from 'react-hook-form';
+import { FC } from 'react';
+import { Credentials } from '../../types';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../api/authApi';
 
@@ -6,23 +8,23 @@ import toast from 'react-hot-toast';
 
 import styles from './LoginForm.module.scss';
 
-export const LoginForm = () => {
+export const LoginForm: FC = () => {
 	const {
 		register,
 		handleSubmit,
 		formState: {
 			errors: { email: emailError, password: passwordError },
 		},
-	} = useForm({ mode: 'onChange' });
+	} = useForm<Credentials>({ mode: 'onChange' });
 
 	const navigate = useNavigate();
 
-	const onSubmit = async (credentials) => {
+	const onSubmit: SubmitHandler<Credentials> = async (credentials) => {
 		try {
 			await loginUser(credentials);
 			toast.success('You have successfully signed in');
 			navigate('/', { replace: true });
-		} catch (error) {
+		} catch (error: any) {
 			toast.error(error.message);
 		}
 	};
@@ -36,7 +38,6 @@ export const LoginForm = () => {
 
 				<input
 					id='email'
-					name='email'
 					type='email'
 					placeholder='example@gmail.com'
 					{...register('email', {
@@ -56,7 +57,6 @@ export const LoginForm = () => {
 
 				<input
 					id='password'
-					name='password'
 					type='password'
 					placeholder='Enter your password'
 					{...register('password', {

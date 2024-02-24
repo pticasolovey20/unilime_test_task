@@ -1,24 +1,22 @@
-import { useParams } from 'react-router-dom';
+import { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchProductById } from '../api/fetchProduct';
+import { getUser } from '../api/authApi';
 
 import toast from 'react-hot-toast';
 
 import { ErrorPage } from '../components/layout/error/ErrorPage';
 import { Loading } from '../components/layout/loading/Loading';
-import { ProductDetailsCard } from '../components/products/ProductDetailsCard';
+import { ProfileCard } from '../components/profile/ProfileCard';
 
-export const ProductDetailsPage = () => {
-	const { id } = useParams();
-
+export const ProfilePage: FC = () => {
 	const {
-		data: product,
+		data: user,
 		error,
 		isLoading,
 		isError,
 	} = useQuery({
-		queryKey: ['product'],
-		queryFn: () => fetchProductById(id),
+		queryKey: ['user'],
+		queryFn: () => getUser(),
 	});
 
 	if (isError) toast.error(error.message);
@@ -28,7 +26,7 @@ export const ProductDetailsPage = () => {
 			{isLoading && <Loading />}
 			{isError && <ErrorPage />}
 
-			{!isLoading && !isError && <ProductDetailsCard {...product} />}
+			{!isLoading && !isError && <ProfileCard {...user} />}
 		</section>
 	);
 };

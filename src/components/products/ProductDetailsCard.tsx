@@ -1,8 +1,23 @@
+import { FC } from 'react';
 import { formatProductDate } from '../../utils/formatDate';
 
 import styles from './Products.module.scss';
 
-export const ProductDetailsCard = ({ price, thumbnail, title, body, created_at }) => {
+type ProductDetailsCardProps = {
+	price: string;
+	thumbnail: string;
+	title: string;
+	body: string;
+	created_at: string;
+};
+
+export const ProductDetailsCard: FC<ProductDetailsCardProps> = ({
+	price,
+	thumbnail,
+	title,
+	body,
+	created_at,
+}) => {
 	return (
 		<div className={styles.card}>
 			<img src={thumbnail} alt={title} />
