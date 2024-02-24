@@ -1,10 +1,8 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { logoutUser } from '../../../api/authApi';
-
-import toast from 'react-hot-toast';
-
-import styles from './Header.module.scss';
 import { FC } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import { logoutUser } from '../../../api/authApi';
+import styles from './Header.module.scss';
 
 const navigation = [
 	{ id: 1, route: '/', label: 'Home' },
@@ -14,16 +12,13 @@ const navigation = [
 export const Header: FC = () => {
 	const navigate = useNavigate();
 
-	const handleLogout = async () => {
-		try {
-			const message = await logoutUser();
-
-			toast.success(message);
-			navigate('/login');
-		} catch (error: any) {
-			toast.error(error.message);
-		}
-	};
+	const handleLogout = async () =>
+		logoutUser()
+			.then((response) => {
+				toast.success(response);
+				navigate('/login');
+			})
+			.catch((error: any) => toast.error(error.message));
 
 	return (
 		<header>

@@ -2,12 +2,10 @@ import { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchProductById } from '../api/fetchProduct';
-
 import toast from 'react-hot-toast';
-
-import { ErrorPage } from '../components/layout/error/ErrorPage';
-import { Loading } from '../components/layout/loading/Loading';
 import { ProductDetailsCard } from '../components/products/ProductDetailsCard';
+import { Loading } from '../components/layout/loading/Loading';
+import { Empty } from '../components/products/Empty';
 
 export const ProductDetailsPage: FC = () => {
 	const { id } = useParams();
@@ -26,8 +24,8 @@ export const ProductDetailsPage: FC = () => {
 
 	return (
 		<section className='page-container'>
-			{isLoading && <Loading />}
-			{isError && <ErrorPage />}
+			{isLoading && !isError && <Loading />}
+			{!isLoading && !product && <Empty />}
 
 			{!isLoading && !isError && <ProductDetailsCard {...product} />}
 		</section>

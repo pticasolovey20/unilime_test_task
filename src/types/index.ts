@@ -9,11 +9,11 @@ export type Product = {
 };
 
 export type FiltersValues = {
-	from: string;
-	to: string;
-	price_from: string;
-	price_to: string;
-	title: string;
+	from: string | null;
+	to: string | null;
+	price_from: string | null;
+	price_to: string | null;
+	title: string | null;
 };
 
 export type Credentials = {
@@ -28,7 +28,7 @@ export type User = {
 	profile_image?: string;
 };
 
-export type RefreshTokenResponse = {
+export type TokenResponse = {
 	access_token: string;
 	token_type: string;
 	expires_in: number;

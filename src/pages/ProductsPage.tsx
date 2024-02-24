@@ -1,15 +1,11 @@
 import { FC, useState } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { fetchProducts } from '../api/fetchProduct';
-
 import toast from 'react-hot-toast';
-
 import { Filters } from '../components/layout/filters/Filters';
 import { ProductsList } from '../components/products/ProductsList';
 import { Pagination } from '../components/layout/pagination/Pagination';
-
-import { Loading } from '../components/layout/loading/Loading';
-import { ErrorPage } from '../components/layout/error/ErrorPage';
+import { ProductsSkeleton } from '../components/products/ProductsSkeleton';
 import { Empty } from '../components/products/Empty';
 
 export const ProductsPage: FC = () => {
@@ -37,9 +33,8 @@ export const ProductsPage: FC = () => {
 			<Filters setFilters={setFilters} setCurrentPage={setCurrentPage} refetch={refetch} />
 			{!!products?.length && !isLoading && <ProductsList products={products} />}
 
-			{isLoading && <Loading />}
-			{isError && <ErrorPage />}
-			{!isLoading && !products?.length && !isError && <Empty />}
+			{isLoading && <ProductsSkeleton />}
+			{!isLoading && !products?.length && <Empty />}
 
 			{!!products && (
 				<Pagination

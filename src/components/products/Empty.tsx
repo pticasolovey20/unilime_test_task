@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import styles from './Products.module.scss';
 
 export const Empty: FC = () => {

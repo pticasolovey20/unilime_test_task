@@ -1,12 +1,10 @@
 import { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUser } from '../api/authApi';
-
 import toast from 'react-hot-toast';
-
-import { ErrorPage } from '../components/layout/error/ErrorPage';
-import { Loading } from '../components/layout/loading/Loading';
 import { ProfileCard } from '../components/profile/ProfileCard';
+import { Loading } from '../components/layout/loading/Loading';
+import { Empty } from '../components/products/Empty';
 
 export const ProfilePage: FC = () => {
 	const {
@@ -24,7 +22,7 @@ export const ProfilePage: FC = () => {
 	return (
 		<section className='page-container'>
 			{isLoading && <Loading />}
-			{isError && <ErrorPage />}
+			{!isLoading && !user && <Empty />}
 
 			{!isLoading && !isError && <ProfileCard {...user} />}
 		</section>

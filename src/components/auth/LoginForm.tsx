@@ -1,11 +1,9 @@
 import { FC } from 'react';
-import { Credentials } from '../../types';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../../api/authApi';
-
+import { useForm, SubmitHandler } from 'react-hook-form';
 import toast from 'react-hot-toast';
-
+import { Credentials } from '../../types';
+import { loginUser, updateToken } from '../../api/authApi';
 import styles from './LoginForm.module.scss';
 
 export const LoginForm: FC = () => {
@@ -15,19 +13,19 @@ export const LoginForm: FC = () => {
 		formState: {
 			errors: { email: emailError, password: passwordError },
 		},
-	} = useForm<Credentials>({ mode: 'onChange' });
+	} = useForm<Credentials>({ mode: 'onTouched' });
 
 	const navigate = useNavigate();
 
-	const onSubmit: SubmitHandler<Credentials> = async (credentials) => {
-		try {
-			await loginUser(credentials);
-			toast.success('You have successfully signed in');
-			navigate('/', { replace: true });
-		} catch (error: any) {
-			toast.error(error.message);
-		}
-	};
+	const onSubmit: SubmitHandler<Credentials> = async (credentials) =>
+		loginUser(credentials)
+			.then(({ access_token, expires_in }) => {
+				if (updateToken(access_token, expires_in)) {
+					toast.success('You have successfully signed in');
+					navigate('/');
+				}
+			})
+			.catch((error: any) => toast.error(error.message));
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.loginForm}>

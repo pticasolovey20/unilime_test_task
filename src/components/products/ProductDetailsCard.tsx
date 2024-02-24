@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { formatProductDate } from '../../utils/formatDate';
-
 import styles from './Products.module.scss';
 
 type ProductDetailsCardProps = {

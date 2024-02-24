@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { MdOutlineChevronLeft, MdOutlineChevronRight } from 'react-icons/md';
-
 import styles from './Pagination.module.scss';
 
 type PaginationProps = {

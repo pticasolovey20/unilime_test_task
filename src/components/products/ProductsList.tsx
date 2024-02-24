@@ -1,8 +1,6 @@
 import { FC } from 'react';
 import { Product } from '../../types';
-
 import { ProductItem } from './ProductItem';
-
 import styles from './Products.module.scss';
 
 type ProductListProps = {

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { User } from '../../types';
-
 import styles from './ProfileCard.module.scss';
 
 export const ProfileCard: FC<User> = ({ email, name, profile_image }) => {
