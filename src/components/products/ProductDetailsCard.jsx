@@ -1,6 +1,8 @@
+import { formatProductDate } from '../../utils/formatDate';
+
 import styles from './Products.module.scss';
 
-export const ProductDetailsCard = ({ price, thumbnail, title, body }) => {
+export const ProductDetailsCard = ({ price, thumbnail, title, body, created_at }) => {
 	return (
 		<div className={styles.card}>
 			<img src={thumbnail} alt={title} />
@@ -19,6 +21,11 @@ export const ProductDetailsCard = ({ price, thumbnail, title, body }) => {
 				<div className={styles.cardRow}>
 					<label>Body:</label>
 					<span>{body || '-'}</span>
+				</div>
+
+				<div className={styles.cardRow}>
+					<label>Date:</label>
+					<span>{formatProductDate(created_at) || '-'}</span>
 				</div>
 			</div>
 		</div>
